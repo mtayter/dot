@@ -136,7 +136,7 @@ export default class DotGame {
         let h = this.ctx.canvas.height;
 
         this.sq = Math.min(Math.round(h / (this.vLines.length + 1)),Math.round(w / (this.hLines.length + 1))); // square height/width
-        this.dt = Math.round(this.sq/15); // dot radius
+        this.dt = Math.round(this.sq/10); // dot radius
         this.crn = Math.round(this.sq/2); // top left corner
 
         this.ctx.clearRect(0,0,w,h);
