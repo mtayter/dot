@@ -12,8 +12,12 @@ export default class DotGame {
         this.dt = undefined;
         this.crn = undefined;
         this.curLine = '';
+        this.checkAImove();
         this.ctx.canvas.onmousemove = (e) => {
 
+            if(this.players[this.turn-1].ai) {
+                return;
+            }
             const rect = this.ctx.canvas.getBoundingClientRect();
             
             // Calculate actual coordinate relative to the internal canvas drawing space
@@ -62,45 +66,53 @@ export default class DotGame {
 
         }
         this.ctx.canvas.onclick = (e) => {
-            if(this.curLine != '') {
-                let o,i,j,p,x,y,closed = false;
-                [o,i,j] = this.curLine.split(',');
-                i = parseInt(i);
-                j = parseInt(j);
-                if(o == 'h') {
-                    this.hLines[i][j] = -this.hLines[i][j];
-                    y = [j-1,j];
-                    x = [i,i];
-                } else if(o == 'v') {
-                    this.vLines[i][j] = -this.vLines[i][j];
-                    y = [i,i];
-                    x = [j-1,j]
-                }
-                for(let i=0; i<2; i++) {
-                    if(this.checkClosed(y[i],x[i])) {
-                        this.squaresLeft--;
-                        this.scoreboard.point(this.turn);
-                        this.squares[y[i]][x[i]] = this.turn;
-                        closed = true;
-                    }
-                }
-                this.curLine = '';
-                if(!closed) {
-                    this.toggleTurn();
-                }
-                this.render();
-                if(this.squaresLeft == 0) {
-                    requestAnimationFrame(() => {
-                        setTimeout(() => {
-                            if(scoreboard.whoWon() == 0) {
-                                alert('Tie!');
-                            } else {
-                                alert('Player ' + scoreboard.whoWon() + ' Wins!');
-                            }
-                        }, 0);
-                    });
-                }
+            if(this.players[this.turn-1].ai) {
+                return;
             }
+            if(this.curLine != '') {
+                this.move(this.curLine);
+                this.curLine = '';
+           }
+        }
+    }
+    move(m) {
+        let o,i,j,p,x,y,closed = false;
+        [o,i,j] = m.split(',');
+        i = parseInt(i);
+        j = parseInt(j);
+        if(o == 'h') {
+            this.hLines[i][j] = this.turn;
+            y = [j-1,j];
+            x = [i,i];
+        } else if(o == 'v') {
+            this.vLines[i][j] = this.turn;
+            y = [i,i];
+            x = [j-1,j]
+        }
+        for(let i=0; i<2; i++) {
+            if(this.checkClosed(y[i],x[i])) {
+                this.squaresLeft--;
+                this.scoreboard.point(this.turn);
+                this.squares[y[i]][x[i]] = this.turn;
+                closed = true;
+            }
+        }
+        if(!closed) {
+            this.toggleTurn();
+        }
+        this.render();
+        if(this.squaresLeft == 0) {
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    if(this.scoreboard.whoWon() == 0) {
+                        alert('Tie!');
+                    } else {
+                        alert('Player ' + this.scoreboard.whoWon() + ' Wins!');
+                    }
+                }, 0);
+            });
+        } else {
+            this.checkAImove();
         }
     }
     checkClosed(y,x) {
@@ -199,5 +211,11 @@ export default class DotGame {
             this.turn = 1;
         }
         this.scoreboard.switchActivePlayer(this.turn);
+    }
+    async checkAImove() {
+        if(this.players[this.turn-1].ai) {
+            const m = await this.players[this.turn-1].aiEngine.move(this.hLines,this.vLines);
+            this.move(m);
+        }
     }
 }

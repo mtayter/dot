@@ -136,6 +136,37 @@
     font-variant-numeric: tabular-nums;
   }
   
+  /* Container dropping right under the scoreboard */
+.player-toggles {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 6px 12px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  margin-top: -4px;  /* Tightly seats the container to the scoreboard bottom */
+  margin-bottom: 12px;
+}
+
+/* Dropdown styling matching a dark/modern theme fallback */
+.toggle-select {
+  padding: 4px 8px;
+  font-size: 13px;
+  background-color: #222;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.toggle-select:hover,
+.toggle-select:focus {
+  border-color: #0076ff; /* Highlight matching user interaction focus */
+}
+
+
   /* ==========================================================================
      6. Semantic Configuration Panel & Sliders
      ========================================================================== */
