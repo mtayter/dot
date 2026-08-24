@@ -1,3 +1,44 @@
+/* Hidden by default on Desktop systems */
+#mobile-restriction-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #121212;
+  color: #ffffff;
+  z-index: 99999;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: sans-serif;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Activates ONLY when the device has low precision (touch) AND cannot hover */
+@media (pointer: coarse) and (hover: none) {
+  #mobile-restriction-overlay {
+    display: flex;
+  }
+  
+  /* Hides the main game elements from view */
+  #game-container, canvas, body > *:not(#mobile-restriction-overlay) {
+    display: none !important;
+  }
+}
+
+.restriction-message h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.restriction-message p {
+  font-size: 1.1rem;
+  color: #aaaaaa;
+}
+
 /* ==========================================================================
    1. Modern CSS Reset & Variable Definitions
    ========================================================================== */
