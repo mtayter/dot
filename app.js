@@ -12,8 +12,8 @@ function init() {
     const widthValue = document.getElementById('widthValue');
     const newGameButton = document.getElementById('newGameButton');
     let dotGame;
-    let player1 = new Player('1','red','LightCoral');
-    let player2 = new Player('2','blue','lightblue');
+    let player1 = new Player('1','#BF616A','#E5B3B8');
+    let player2 = new Player('2','#5E81AC','#88C0D0');
     const p1Card = document.getElementById('p1Card');
     const p2Card = document.getElementById('p2Card');
     const player1Score = document.getElementById('player1Score');
