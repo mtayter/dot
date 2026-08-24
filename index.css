@@ -1,0 +1,310 @@
+/* ==========================================================================
+   1. Modern CSS Reset & Variable Definitions
+   ========================================================================== */
+   * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  :root {
+    --bg-color: #f8fafc;
+    --card-bg: #ffffff;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --border-color: #e2e8f0;
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    --radius: 12px;
+    --font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+  
+  body {
+    font-family: var(--font-stack);
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+  
+  header, footer {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    flex-shrink: 0;
+  }
+  
+  /* ==========================================================================
+     2. Main Layout Grid
+     ========================================================================== */
+  main {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    gap: 1.5rem;
+    width: 100vw;
+    padding: 1rem;
+    flex: 1;
+    overflow: hidden;
+  }
+  
+  /* ==========================================================================
+     3. Game Board (Canvas Workspace)
+     ========================================================================== */
+  section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 1rem;
+    overflow: hidden;
+  }
+  
+  #board {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  
+  /* ==========================================================================
+     4. Sidebar Controls Panel
+     ========================================================================== */
+  #controls {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 1.5rem;
+    width: 340px;
+    min-width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    justify-content: flex-start;
+    height: 100%;
+  }
+  
+  /* ==========================================================================
+     5. Scoreboard Component
+     ========================================================================== */
+  .score-board {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    user-select: none;
+    width: 100%;
+  }
+  
+  .score-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.75rem;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+  }
+  
+  .score-card.active {
+    border-color: var(--accent);
+    background-color: rgba(59, 130, 246, 0.05);
+  }
+  
+  .score-card label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .score-card output {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+  
+  /* ==========================================================================
+     6. Semantic Configuration Panel & Sliders
+     ========================================================================== */
+  .settings-group {
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: 100%;
+    margin-top: auto; /* Dynamically pushes entire setup container to layout floor */
+  }
+  
+  /* Utility to hide accessibility legends cleanly from visual layout viewports */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+  
+  .control-group {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .control-group label {
+    width: 65px;
+    min-width: 65px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    user-select: none;
+  }
+  
+  #controls input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    height: 6px;
+    background: var(--border-color);
+    border-radius: 3px;
+    outline: none;
+  }
+  
+  #controls input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    transition: transform 0.1s ease, background-color 0.1s ease;
+  }
+  
+  #controls input[type="range"]::-webkit-slider-thumb:hover {
+    background: var(--accent-hover);
+    transform: scale(1.1);
+  }
+  
+  #controls input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border: none;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    transition: transform 0.1s ease, background-color 0.1s ease;
+  }
+  
+  #controls input[type="range"]::-moz-range-thumb:hover {
+    background: var(--accent-hover);
+    transform: scale(1.1);
+  }
+  
+  .control-group output {
+    width: 32px;
+    min-width: 32px;
+    text-align: right;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    user-select: none;
+  }
+  
+  /* ==========================================================================
+     7. Buttons
+     ========================================================================== */
+  #controls input[type="button"] {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+    user-select: none;
+    width: 100%;
+  }
+  
+  #newGameButton {
+    background-color: var(--accent);
+    color: #ffffff;
+  }
+  
+  #newGameButton:hover {
+    background-color: var(--accent-hover);
+  }
+  
+  #newGameButton:active {
+    transform: scale(0.98);
+  }
+  
+  /* ==========================================================================
+     8. Mobile Layout Configurations
+     ========================================================================== */
+  @media (max-width: 768px) {
+    body {
+      overflow: auto;
+    }
+  
+    main {
+      flex-direction: column;
+      padding: 1rem;
+      gap: 1rem;
+      height: auto;
+      overflow: visible;
+    }
+  
+    section {
+      aspect-ratio: 1 / 1;
+      width: 100%;
+      height: auto;
+    }
+  
+    #controls {
+      width: 100%;
+      min-width: unset;
+      max-width: 100%;
+      height: auto;
+      gap: 1.5rem;
+    }
+  
+    .settings-group {
+      margin-top: 0;
+      gap: 1rem;
+    }
+  
+    #controls input[type="range"]::-webkit-slider-thumb {
+      width: 22px;
+      height: 22px;
+    }
+  
+    #controls input[type="range"]::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+    }
+  
+    #controls input[type="button"] {
+      padding: 0.85rem 1rem;
+    }
+  }
