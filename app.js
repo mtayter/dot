@@ -30,7 +30,6 @@ function init() {
         const player2 = new Player('2','#5E81AC','#88C0D0',player2Type.options[player2Type.selectedIndex].value);
         dotGame = new DotGame(parseInt(heightRange.value),parseInt(widthRange.value),player1,player2,ctx,scoreboard);
         scoreboard.reset();
-        console.dir(dotGame);
         dotGame.render();
     });
     function handleResize() {
