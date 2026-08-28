@@ -21,6 +21,7 @@ export default class DotGame {
         2) PASS: 2nd test case for choosing smallest area to give
         3) PASS: 3rd test case for choosing smallest area to give (smallest group of 2s is wrong) - oops, test 2 already covers this...
         4) FAIL: test case for knowing when to not take a square
+        5) PASS: AI wasn't giving a single box before larger areas due to a bug
         */
 
         const testSel = document.getElementById('test-select');
