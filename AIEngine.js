@@ -94,7 +94,7 @@ export default class AIEngine {
         // 2) remove one at a time to test
         this.smallestArea = [];
         this.visited = Array.from({ length: this.y }, () => Array(this.x).fill(0));
-        while(two = this.twos.pop()) {
+        while(two = this.twos[0]) {
             this.curArea = [];
 
             // 3) recursively merge adjoining 2s and remove from testing list

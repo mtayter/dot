@@ -179,6 +179,32 @@ export default class DotGame {
             this.move("v,3,3");
         }
 
+        if(testCase == 5) {
+            height = 2;
+            width = 2;
+            document.getElementById('heightRange').value = height;
+            document.getElementById('widthRange').value = width;
+            document.getElementById('heightValue').textContent = height;
+            document.getElementById('widthValue').textContent = width;
+            this.vLines = Array.from({ length: height }, () => Array(width+1).fill(0));
+            this.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
+            this.squares = Array.from({ length: height }, () => Array(width).fill(0));
+            this.squaresLeft = height * width;
+            document.getElementById('player1Type').selectedIndex = 1;
+            document.getElementById('player2Type').selectedIndex = 0;
+            this.players[0] = new Player(this.players[0].name,this.players[0].color,this.players[0].hover,'ai');
+            this.players[1] = new Player(this.players[1].name,this.players[1].color,this.players[1].hover,'human');
+    
+            this.players[0].ai = false;
+            this.move("h,0,2");
+            this.move("h,1,1");
+            this.move("h,1,2");
+            this.move("v,0,0");
+            this.move("v,0,1");
+            this.players[0].ai = true;
+            this.move("v,1,0");
+        }
+
         this.ctx.canvas.onmousemove = (e) => {
 
             if(this.players[this.turn-1].ai) {
