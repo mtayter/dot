@@ -36,8 +36,8 @@
                     <option value="ai">AI</option>
                 </select>
                 <select id="player2Type" class="toggle-select">
-                    <option value="human" selected>Human</option>
-                    <option value="ai">AI</option>
+                    <option value="human">Human</option>
+                    <option value="ai" selected>AI</option>
                 </select>
             </div>
 
@@ -60,6 +60,30 @@
                 <input type="button" value="New Game" id="newGameButton">
             </fieldset>
         </aside>
+        <!-- START OF TEST DROPDOWN BOX -->
+        <div id="test-dropdown-container" style="position: fixed;
+                                                top: 10px;
+                                                right: 10px;
+                                                 z-index: 9999;
+                                                background: rgba(255, 255, 255, 0.95);
+                                                padding: 8px 12px;
+                                                border: 1px solid #ccc;
+                                                border-radius: 4px;
+                                                box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+                                                font-family: Arial, sans-serif;
+                                                font-size: 14px;">
+        <label for="test-select" style="margin-right: 5px; font-weight: bold; color: #333;">Test:</label>
+        <select id="test-select" style="padding: 4px;
+                                        border-radius: 4px;
+                                        border: 1px solid #999;
+                                        background-color: #fff;
+                                        cursor: pointer;">
+        <option value="0"></option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        </select>
     </main> 
     <footer></footer>
 </body>

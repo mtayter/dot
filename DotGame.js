@@ -1,3 +1,5 @@
+import Player from "./Player.js";
+
 export default class DotGame {
     constructor(height,width,player1,player2,ctx,scoreboard) {
         this.vLines = Array.from({ length: height }, () => Array(width+1).fill(0));
@@ -12,7 +14,171 @@ export default class DotGame {
         this.dt = undefined;
         this.crn = undefined;
         this.curLine = '';
-        this.checkAImove();
+
+        /*
+        0) not testing
+        1) PASS: test case for choosing smallest area to give
+        2) PASS: 2nd test case for choosing smallest area to give
+        3) PASS: 3rd test case for choosing smallest area to give (smallest group of 2s is wrong) - oops, test 2 already covers this...
+        4) FAIL: test case for knowing when to not take a square
+        */
+
+        const testSel = document.getElementById('test-select');
+        const testCase = testSel.options[testSel.selectedIndex].value;
+
+        if(testCase == 0) {
+            this.checkAImove();
+        }
+
+	    if(testCase == 1) {
+            height = 4;
+            width = 3;
+            document.getElementById('heightRange').value = height;
+            document.getElementById('widthRange').value = width;
+            document.getElementById('heightValue').textContent = height;
+            document.getElementById('widthValue').textContent = width;
+            this.vLines = Array.from({ length: height }, () => Array(width+1).fill(0));
+            this.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
+            this.squares = Array.from({ length: height }, () => Array(width).fill(0));
+            this.squaresLeft = height * width;
+            document.getElementById('player1Type').selectedIndex = 1;
+            document.getElementById('player2Type').selectedIndex = 0;
+            this.players[0] = new Player(this.players[0].name,this.players[0].color,this.players[0].hover,'ai');
+            this.players[1] = new Player(this.players[1].name,this.players[1].color,this.players[1].hover,'human');
+
+            this.players[0].ai = false;
+            this.move("h,0,0");
+            this.move("h,0,2");
+            this.move("h,0,4");
+            this.move("h,1,0");
+            this.move("h,1,4");
+            this.move("h,2,0");
+            this.move("h,2,2");
+            this.move("h,2,4");
+            this.move("v,0,1");
+            this.move("v,0,3");
+            this.move("v,1,1");
+            this.move("v,1,3");
+            this.move("v,2,1");
+            this.move("v,2,2");
+            this.move("v,3,0");
+            this.players[0].ai = true;
+            this.move("v,3,3");
+        }
+
+        if(testCase == 2) {
+            height = 4;
+            width = 3;
+            document.getElementById('heightRange').value = height;
+            document.getElementById('widthRange').value = width;
+            document.getElementById('heightValue').textContent = height;
+            document.getElementById('widthValue').textContent = width;
+            this.vLines = Array.from({ length: height }, () => Array(width+1).fill(0));
+            this.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
+            this.squares = Array.from({ length: height }, () => Array(width).fill(0));
+            this.squaresLeft = height * width;
+            document.getElementById('player1Type').selectedIndex = 1;
+            document.getElementById('player2Type').selectedIndex = 0;
+            this.players[0] = new Player(this.players[0].name,this.players[0].color,this.players[0].hover,'ai');
+            this.players[1] = new Player(this.players[1].name,this.players[1].color,this.players[1].hover,'human');
+    
+            this.players[0].ai = false;
+            this.move("h,0,0");
+            this.move("h,0,3");
+            this.move("h,0,4");
+            this.move("h,1,0");
+            this.move("h,1,1");
+            this.move("h,1,2");
+            this.move("h,1,3");
+            this.move("h,1,4");
+            this.move("h,2,0");
+            this.move("h,2,2");
+            this.move("h,2,4");
+            this.move("v,0,0");
+            this.move("v,0,3");
+            this.move("v,1,0");
+            this.move("v,1,3");
+            this.move("v,2,0");
+            this.move("v,2,3");
+            this.players[0].ai = true;
+            this.move("v,3,3");
+        }
+
+        if(testCase == 3) {
+            height = 5;
+            width = 2;
+            document.getElementById('heightRange').value = height;
+            document.getElementById('widthRange').value = width;
+            document.getElementById('heightValue').textContent = height;
+            document.getElementById('widthValue').textContent = width;
+            this.vLines = Array.from({ length: height }, () => Array(width+1).fill(0));
+            this.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
+            this.squares = Array.from({ length: height }, () => Array(width).fill(0));
+            this.squaresLeft = height * width;
+            document.getElementById('player1Type').selectedIndex = 1;
+            document.getElementById('player2Type').selectedIndex = 0;
+            this.players[0] = new Player(this.players[0].name,this.players[0].color,this.players[0].hover,'ai');
+            this.players[1] = new Player(this.players[1].name,this.players[1].color,this.players[1].hover,'human');
+    
+            this.players[0].ai = false;
+            this.move("h,0,0");
+            this.move("h,0,5");
+            this.move("h,1,0");
+            this.move("h,1,2");
+            this.move("h,1,5");
+            this.move("v,0,0");
+            this.move("v,0,2");
+            this.move("v,1,0");
+            this.move("v,1,2");
+            this.move("v,2,0");
+            this.move("v,2,1");
+            this.move("v,3,0");
+            this.move("v,3,1");
+            this.move("v,3,2");
+            this.move("v,4,0");
+            this.players[0].ai = true;
+            this.move("v,4,2");
+        }
+
+        if(testCase == 4) {
+            height = 4;
+            width = 3;
+            document.getElementById('heightRange').value = height;
+            document.getElementById('widthRange').value = width;
+            document.getElementById('heightValue').textContent = height;
+            document.getElementById('widthValue').textContent = width;
+            this.vLines = Array.from({ length: height }, () => Array(width+1).fill(0));
+            this.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
+            this.squares = Array.from({ length: height }, () => Array(width).fill(0));
+            this.squaresLeft = height * width;
+            document.getElementById('player1Type').selectedIndex = 0;
+            document.getElementById('player2Type').selectedIndex = 1;
+            this.players[0] = new Player(this.players[0].name,this.players[0].color,this.players[0].hover,'human');
+            this.players[1] = new Player(this.players[1].name,this.players[1].color,this.players[1].hover,'ai');
+    
+            this.players[1].ai = false;
+            this.move("h,0,3");
+            this.move("h,0,4");
+            this.move("h,1,0");
+            this.move("h,1,2");
+            this.move("h,1,3");
+            this.move("h,1,4");
+            this.move("h,2,0");
+            this.move("h,2,2");
+            this.move("h,2,4");
+            this.move("v,0,0");
+            this.move("v,0,1");
+            this.move("v,0,2");
+            this.move("v,0,3");
+            this.move("v,1,0");
+            this.move("v,1,1");
+            this.move("v,1,3");
+            this.move("v,2,0");
+            this.move("v,2,3");
+            this.players[1].ai = true;
+            this.move("v,3,3");
+        }
+
         this.ctx.canvas.onmousemove = (e) => {
 
             if(this.players[this.turn-1].ai) {
