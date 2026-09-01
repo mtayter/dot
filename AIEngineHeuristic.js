@@ -1,4 +1,4 @@
-export default class AIEngine { 
+export default class AIEngineHeuristic { 
     constructor() {
         this.h = [];
         this.v = [];

@@ -1,4 +1,4 @@
-import AIEngine from './AIEngine.js';
+import AIEngineHeuristic from './AIEngineHeuristic.js';
 
 export default class Player {
     constructor(name,color,hover,ai="human") {
@@ -6,6 +6,6 @@ export default class Player {
         this.color = color;
         this.hover = hover;
         this.ai = (ai == "ai");
-        this.aiEngine = this.ai ? new AIEngine : null;
+        this.aiEngine = this.ai ? new AIEngineHeuristic : null;
     }
 }
