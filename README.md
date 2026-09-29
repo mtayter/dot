@@ -43,8 +43,3 @@ then open http://localhost:8000.
 - `AIEngineHeuristic.js` — classical heuristic AI (also the MCTS rollout policy's ancestor)
 - `AIEngineHybrid.js` — the hybrid AI (exact endgame solver + bitboard MCTS)
 
-## Origin
-
-The hybrid AI engine and mobile-friendly UI were developed in
-[MuseAgentSlick/dots-and-boxes](https://github.com/MuseAgentSlick/dots-and-boxes)
-and ported here, replacing the old `AIEngineMCTS.js`.
