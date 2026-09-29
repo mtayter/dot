@@ -1,44 +1,3 @@
-/* Hidden by default on Desktop systems */
-#mobile-restriction-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #121212;
-  color: #ffffff;
-  z-index: 99999;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  font-family: sans-serif;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-/* Activates ONLY when the device has low precision (touch) AND cannot hover */
-@media (pointer: coarse) and (hover: none) {
-  #mobile-restriction-overlay {
-    display: flex;
-  }
-  
-  /* Hides the main game elements from view */
-  #game-container, canvas, body > *:not(#mobile-restriction-overlay) {
-    display: none !important;
-  }
-}
-
-.restriction-message h1 {
-  font-size: 2rem;
-  margin-bottom: 10px;
-}
-
-.restriction-message p {
-  font-size: 1.1rem;
-  color: #aaaaaa;
-}
-
 /* ==========================================================================
    1. Modern CSS Reset & Variable Definitions
    ========================================================================== */
@@ -47,7 +6,7 @@
     margin: 0;
     padding: 0;
   }
-  
+
   :root {
     --bg-color: #f8fafc;
     --card-bg: #ffffff;
@@ -60,25 +19,34 @@
     --radius: 12px;
     --font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   }
-  
+
+  html {
+    /* Stop pull-to-refresh / rubber-banding while playing */
+    overscroll-behavior: none;
+  }
+
   body {
     font-family: var(--font-stack);
     background-color: var(--bg-color);
     color: var(--text-primary);
     height: 100vh;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     overflow: hidden;
+    /* No double-tap zoom on buttons/controls */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
-  
+
   header, footer {
     width: 100%;
     padding: 0.5rem 1rem;
     flex-shrink: 0;
   }
-  
+
   /* ==========================================================================
      2. Main Layout Grid
      ========================================================================== */
@@ -93,7 +61,7 @@
     flex: 1;
     overflow: hidden;
   }
-  
+
   /* ==========================================================================
      3. Game Board (Canvas Workspace)
      ========================================================================== */
@@ -109,14 +77,20 @@
     padding: 1rem;
     overflow: hidden;
   }
-  
+
   #board {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
     display: block;
+    /* The game handles all touch itself: no scrolling, zooming, or
+       callouts starting from the canvas. */
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
   }
-  
+
   /* ==========================================================================
      4. Sidebar Controls Panel
      ========================================================================== */
@@ -134,7 +108,7 @@
     justify-content: flex-start;
     height: 100%;
   }
-  
+
   /* ==========================================================================
      5. Scoreboard Component
      ========================================================================== */
@@ -145,7 +119,7 @@
     user-select: none;
     width: 100%;
   }
-  
+
   .score-card {
     display: flex;
     flex-direction: column;
@@ -156,12 +130,12 @@
     border: 1px solid var(--border-color);
     border-radius: 8px;
   }
-  
+
   .score-card.active {
     border-color: var(--accent);
     background-color: rgba(59, 130, 246, 0.05);
   }
-  
+
   .score-card label {
     font-size: 0.75rem;
     font-weight: 700;
@@ -169,14 +143,25 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
-  
+
   .score-card output {
     font-size: 1.75rem;
     font-weight: 700;
     color: var(--text-primary);
     font-variant-numeric: tabular-nums;
   }
-  
+
+  .player-iters {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    min-height: 1em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
   /* Container dropping right under the scoreboard */
 .player-toggles {
   display: flex;
@@ -219,7 +204,7 @@
     width: 100%;
     margin-top: auto; /* Dynamically pushes entire setup container to layout floor */
   }
-  
+
   /* Utility to hide accessibility legends cleanly from visual layout viewports */
   .visually-hidden {
     position: absolute;
@@ -231,14 +216,14 @@
     clip: rect(0, 0, 0, 0);
     border: 0;
   }
-  
+
   .control-group {
     display: flex;
     flex-direction: row;
     gap: 1rem;
     align-items: center;
   }
-  
+
   .control-group label {
     width: 65px;
     min-width: 65px;
@@ -249,7 +234,7 @@
     letter-spacing: 0.05em;
     user-select: none;
   }
-  
+
   #controls input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
@@ -259,7 +244,7 @@
     border-radius: 3px;
     outline: none;
   }
-  
+
   #controls input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -270,12 +255,12 @@
     cursor: pointer;
     transition: transform 0.1s ease, background-color 0.1s ease;
   }
-  
+
   #controls input[type="range"]::-webkit-slider-thumb:hover {
     background: var(--accent-hover);
     transform: scale(1.1);
   }
-  
+
   #controls input[type="range"]::-moz-range-thumb {
     width: 18px;
     height: 18px;
@@ -285,12 +270,12 @@
     cursor: pointer;
     transition: transform 0.1s ease, background-color 0.1s ease;
   }
-  
+
   #controls input[type="range"]::-moz-range-thumb:hover {
     background: var(--accent-hover);
     transform: scale(1.1);
   }
-  
+
   .control-group output {
     width: 32px;
     min-width: 32px;
@@ -301,7 +286,7 @@
     font-variant-numeric: tabular-nums;
     user-select: none;
   }
-  
+
   /* ==========================================================================
      7. Buttons
      ========================================================================== */
@@ -317,66 +302,130 @@
     user-select: none;
     width: 100%;
   }
-  
+
   #newGameButton {
     background-color: var(--accent);
     color: #ffffff;
   }
-  
+
   #newGameButton:hover {
     background-color: var(--accent-hover);
   }
-  
+
   #newGameButton:active {
     transform: scale(0.98);
   }
-  
+
   /* ==========================================================================
-     8. Mobile Layout Configurations
+     8. Game-over banner (replaces the old alert() popup)
+     ========================================================================== */
+  .game-over-banner {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(15, 23, 42, 0.55);
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  .game-over-banner.show {
+    display: flex;
+  }
+
+  .game-over-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 2rem 2.5rem;
+    text-align: center;
+    max-width: 90vw;
+  }
+
+  .game-over-card h2 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .game-over-card p {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 1.25rem;
+  }
+
+  .game-over-card button {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--accent);
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  .game-over-card button:active {
+    transform: scale(0.98);
+  }
+
+  /* ==========================================================================
+     9. Mobile Layout Configurations
      ========================================================================== */
   @media (max-width: 768px) {
     body {
       overflow: auto;
     }
-  
+
     main {
       flex-direction: column;
-      padding: 1rem;
-      gap: 1rem;
+      padding: 0.75rem;
+      gap: 0.75rem;
       height: auto;
       overflow: visible;
     }
-  
+
     section {
       aspect-ratio: 1 / 1;
       width: 100%;
       height: auto;
+      padding: 0.5rem;
     }
-  
+
     #controls {
       width: 100%;
       min-width: unset;
       max-width: 100%;
       height: auto;
-      gap: 1.5rem;
+      gap: 1rem;
+      padding: 1rem;
     }
-  
+
     .settings-group {
       margin-top: 0;
       gap: 1rem;
     }
-  
+
+    /* Bigger slider thumbs for fingers */
     #controls input[type="range"]::-webkit-slider-thumb {
-      width: 22px;
-      height: 22px;
+      width: 26px;
+      height: 26px;
     }
-  
+
     #controls input[type="range"]::-moz-range-thumb {
-      width: 22px;
-      height: 22px;
+      width: 26px;
+      height: 26px;
     }
-  
+
     #controls input[type="button"] {
-      padding: 0.85rem 1rem;
+      padding: 0.9rem 1rem;
+      font-size: 1.05rem;
+    }
+
+    .toggle-select {
+      padding: 8px 10px;
+      font-size: 15px;
     }
   }
