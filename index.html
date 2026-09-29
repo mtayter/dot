@@ -2,18 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dot Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#f8fafc">
+    <title>Dots and Boxes</title>
     <link rel="stylesheet" href="index.css">
     <script type="module" src="app.js"></script>
 </head>
 <body>
-    <div id="mobile-restriction-overlay">
-        <div class="restriction-message">
-            <h1>Mobile Not Supported</h1>
-            <p>This game requires a physical mouse. Please open it on a desktop computer.</p>
-        </div>
-    </div>
     <header><nav></nav></header>
     <main>
         <section><canvas id="board"></canvas></section>
@@ -23,73 +18,67 @@
                 <div class="score-card active" id="p1Card">
                 <label for="player1Score">Player 1</label>
                 <output id="player1Score">0</output>
+                <div class="player-iters" id="p1Iters"></div>
                 </div>
                 <div class="score-card" id="p2Card">
                 <label for="player2Score">Player 2</label>
                 <output id="player2Score">0</output>
+                <div class="player-iters" id="p2Iters"></div>
                 </div>
             </section>
 
             <div class="player-toggles">
-                <select id="player1Type" class="toggle-select">
+                <select id="player1Type" class="toggle-select" aria-label="Player 1 type">
                     <option value="human" selected>Human</option>
-                    <option value="ai-heuristic">AI-heuristic</option>
-                    <option value="ai-mcts">AI-MCTS</option>
+                    <option value="ai-heuristic">AI-Heuristic</option>
+                    <option value="ai-hybrid">AI-Hybrid</option>
                 </select>
-                <select id="player2Type" class="toggle-select">
+                <select id="player2Type" class="toggle-select" aria-label="Player 2 type">
                     <option value="human">Human</option>
-                    <option value="ai-heuristic">AI-heuristic</option>
-                    <option value="ai-mcts" selected>AI-MCTS</option>
+                    <option value="ai-heuristic">AI-Heuristic</option>
+                    <option value="ai-hybrid" selected>AI-Hybrid</option>
                 </select>
             </div>
 
             <!-- 2. Semantic Settings Configuration Group -->
             <fieldset class="settings-group">
                 <legend class="visually-hidden">Grid Size Settings</legend>
-                
+
                 <div class="control-group">
                 <label for="heightRange">Height</label>
-                <input type="range" min="1" max="20" value="6" id="heightRange">
-                <output id="heightValue">6</output>
+                <input type="range" min="1" max="10" value="3" id="heightRange">
+                <output id="heightValue">3</output>
                 </div>
-                
+
                 <div class="control-group">
                 <label for="widthRange">Width</label>
-                <input type="range" min="1" max="20" value="6" id="widthRange">
-                <output id="widthValue">6</output>
+                <input type="range" min="1" max="10" value="3" id="widthRange">
+                <output id="widthValue">3</output>
+                </div>
+
+                <div class="control-group think-group hidden" id="p1ThinkGroup">
+                <label for="p1ThinkRange">P1 Think</label>
+                <input type="range" min="200" max="5000" step="100" value="1400" id="p1ThinkRange">
+                <output id="p1ThinkValue">1.4s</output>
+                </div>
+
+                <div class="control-group think-group" id="p2ThinkGroup">
+                <label for="p2ThinkRange">P2 Think</label>
+                <input type="range" min="200" max="5000" step="100" value="1400" id="p2ThinkRange">
+                <output id="p2ThinkValue">1.4s</output>
                 </div>
 
                 <input type="button" value="New Game" id="newGameButton">
             </fieldset>
         </aside>
-        <!-- START OF TEST DROPDOWN BOX -->
-        <div id="test-dropdown-container" style="position: fixed;
-                                                top: 10px;
-                                                right: 10px;
-                                                 z-index: 9999;
-                                                background: rgba(255, 255, 255, 0.95);
-                                                padding: 8px 12px;
-                                                border: 1px solid #ccc;
-                                                border-radius: 4px;
-                                                box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-                                                font-family: Arial, sans-serif;
-                                                font-size: 14px;">
-        <label for="test-select" style="margin-right: 5px; font-weight: bold; color: #333;">Test:</label>
-        <select id="test-select" style="padding: 4px;
-                                        border-radius: 4px;
-                                        border: 1px solid #999;
-                                        background-color: #fff;
-                                        cursor: pointer;">
-        <option value="0"></option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        </select>
-    </main> 
+    </main>
+    <div id="gameOverBanner" class="game-over-banner" role="dialog" aria-live="polite">
+        <div class="game-over-card">
+            <h2 id="gameOverTitle">Player 1 wins!</h2>
+            <p id="gameOverSubtitle">0 – 0</p>
+            <button id="playAgainButton">Play again</button>
+        </div>
+    </div>
     <footer></footer>
 </body>
 </html>
