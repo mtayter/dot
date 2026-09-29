@@ -3,7 +3,7 @@
 Playable Dots and Boxes in the browser — desktop and mobile. Human vs human,
 human vs AI, or AI vs AI, on boards from 1×1 up to 10×10.
 
-**Play it live:** https://mtayter.github.io/dot/
+**Play it live:** https://mtayter.github.io/dots-and-boxes/
 
 ## The AI
 
