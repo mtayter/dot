@@ -221,8 +221,8 @@ export default class DotGame {
             this.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
             this.squares = Array.from({ length: height }, () => Array(width).fill(0));
             this.squaresLeft = height * width;
-            document.getElementById('player1Type').value = 'ai-hybrid';
-            document.getElementById('player2Type').value = 'human';
+            document.getElementById('player1Type').value = 'human';
+            document.getElementById('player2Type').value = 'ai-hybrid';
             this.players[0] = new Player(this.players[0].name,this.players[0].color,this.players[0].hover,'human');
             this.players[1] = new Player(this.players[1].name,this.players[1].color,this.players[1].hover,'ai-hybrid');
     
