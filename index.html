@@ -28,16 +28,28 @@
             </section>
 
             <div class="player-toggles">
-                <select id="player1Type" class="toggle-select" aria-label="Player 1 type">
-                    <option value="human" selected>Human</option>
-                    <option value="ai-heuristic">AI-Heuristic</option>
-                    <option value="ai-hybrid">AI-Hybrid</option>
-                </select>
-                <select id="player2Type" class="toggle-select" aria-label="Player 2 type">
-                    <option value="human">Human</option>
-                    <option value="ai-heuristic">AI-Heuristic</option>
-                    <option value="ai-hybrid" selected>AI-Hybrid</option>
-                </select>
+                <div class="player-col">
+                    <select id="player1Type" class="toggle-select" aria-label="Player 1 type">
+                        <option value="human" selected>Human</option>
+                        <option value="ai-heuristic">AI-Heuristic</option>
+                        <option value="ai-hybrid">AI-Hybrid</option>
+                    </select>
+                    <div class="think-inline hidden" id="p1ThinkGroup">
+                        <input type="range" min="200" max="5000" step="100" value="1400" id="p1ThinkRange" aria-label="Player 1 think time">
+                        <output id="p1ThinkValue">1.4s</output>
+                    </div>
+                </div>
+                <div class="player-col">
+                    <select id="player2Type" class="toggle-select" aria-label="Player 2 type">
+                        <option value="human">Human</option>
+                        <option value="ai-heuristic">AI-Heuristic</option>
+                        <option value="ai-hybrid" selected>AI-Hybrid</option>
+                    </select>
+                    <div class="think-inline" id="p2ThinkGroup">
+                        <input type="range" min="200" max="5000" step="100" value="1400" id="p2ThinkRange" aria-label="Player 2 think time">
+                        <output id="p2ThinkValue">1.4s</output>
+                    </div>
+                </div>
             </div>
 
             <!-- 2. Semantic Settings Configuration Group -->
@@ -54,18 +66,6 @@
                 <label for="widthRange">Width</label>
                 <input type="range" min="1" max="10" value="3" id="widthRange">
                 <output id="widthValue">3</output>
-                </div>
-
-                <div class="control-group think-group hidden" id="p1ThinkGroup">
-                <label for="p1ThinkRange">P1 Think</label>
-                <input type="range" min="200" max="5000" step="100" value="1400" id="p1ThinkRange">
-                <output id="p1ThinkValue">1.4s</output>
-                </div>
-
-                <div class="control-group think-group" id="p2ThinkGroup">
-                <label for="p2ThinkRange">P2 Think</label>
-                <input type="range" min="200" max="5000" step="100" value="1400" id="p2ThinkRange">
-                <output id="p2ThinkValue">1.4s</output>
                 </div>
 
                 <input type="button" value="New Game" id="newGameButton">
