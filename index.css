@@ -233,10 +233,17 @@
 }
 
 /* Compact think slider row living under its player's dropdown */
+/* When hidden, keep the space reserved (visibility, not display) so the
+   row appearing/disappearing doesn't shift the layout up and down. */
 .think-inline {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.think-inline.hidden {
+  display: flex !important;
+  visibility: hidden;
 }
 
 .think-inline input[type="range"] {
