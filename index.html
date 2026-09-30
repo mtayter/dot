@@ -13,8 +13,8 @@
     <main>
         <section><canvas id="board"></canvas></section>
         <aside id="controls">
-            <!-- 1. Semantic Match State Group -->
-            <div class="score-box">
+            <!-- Box 1 (right): scores -->
+            <div class="panel-box score-box">
             <section class="score-board" aria-label="Player Scores">
                 <div class="score-card active" id="p1Card">
                 <label for="player1Score">Player 1</label>
@@ -29,6 +29,8 @@
             </section>
             </div>
 
+            <!-- Box 2 (right): player types + board setup -->
+            <div class="panel-box setup-box">
             <div class="player-toggles">
                 <div class="player-col">
                     <select id="player1Type" class="toggle-select" aria-label="Player 1 type">
@@ -72,9 +74,10 @@
 
                 <input type="button" value="New Game" id="newGameButton">
             </fieldset>
+            </div>
 
-            <!-- Dev test panel: hidden by default, revealed with the Konami code -->
-            <div class="test-box hidden" id="testBox">
+            <!-- Box 3 (right): dev test panel, hidden until the Konami code -->
+            <div class="panel-box test-box hidden" id="testBox">
                 <button class="test-box-close" id="testBoxClose" aria-label="Hide test panel">×</button>
                 <div class="control-group">
                 <label for="test-select">Test case</label>
