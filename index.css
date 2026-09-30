@@ -166,12 +166,48 @@
 .player-toggles {
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  align-items: flex-start;
+  gap: 12px;
   padding: 6px 12px;
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 6px;
   margin-top: -4px;  /* Tightly seats the container to the scoreboard bottom */
   margin-bottom: 12px;
+}
+
+/* One vertical stack per player: type dropdown with its think slider below */
+.player-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.player-col .toggle-select {
+  width: 100%;
+}
+
+/* Compact think slider row living under its player's dropdown */
+.think-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.think-inline input[type="range"] {
+  flex: 1;
+  min-width: 0;
+}
+
+.think-inline output {
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-width: 34px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
 }
 
 /* Dropdown styling matching a dark/modern theme fallback */
