@@ -69,7 +69,7 @@ function init() {
         // Stop the previous game's AI loop if it's still thinking: otherwise
         // the abandoned game keeps move()ing and rendering its old board
         // onto this same canvas.
-        if (dotGame) dotGame.cancelled = true;
+        if (dotGame) { dotGame.cancelled = true; dotGame.destroy(); }
         const height = parseInt(heightRange.value);
         const width = parseInt(widthRange.value);
         const p1ThinkMs = parseInt(p1ThinkRange.value);
