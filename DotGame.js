@@ -32,8 +32,15 @@ export default class DotGame {
 
         const canvas = this.ctx.canvas;
 
+        // All of this game's canvas listeners die with it: when a new game
+        // replaces this one, destroy() aborts the controller so the abandoned
+        // game can never render (or move) over the new board again.
+        this._listeners = new AbortController();
+        const onCanvas = (type, fn) =>
+            canvas.addEventListener(type, fn, { signal: this._listeners.signal });
+
         // Hover preview (mouse only; touch has no hover).
-        canvas.addEventListener('pointermove', (e) => {
+        onCanvas('pointermove', (e) => {
             if (e.pointerType !== 'mouse') return;
             if (this.players[this.turn-1].ai) return;
             this.setHover(this.lineAtPoint(e.clientX, e.clientY));
@@ -41,14 +48,14 @@ export default class DotGame {
 
         // Tap-to-play: press highlights a line, release on the same line plays it.
         // This works for mouse clicks and touch taps alike, and ignores drags.
-        canvas.addEventListener('pointerdown', (e) => {
+        onCanvas('pointerdown', (e) => {
             if (this.players[this.turn-1].ai) return;
             e.preventDefault();
             this.downLine = this.lineAtPoint(e.clientX, e.clientY);
             this.setHover(this.downLine);
             try { canvas.setPointerCapture(e.pointerId); } catch (err) { /* noop */ }
         });
-        canvas.addEventListener('pointerup', (e) => {
+        onCanvas('pointerup', (e) => {
             if (this.players[this.turn-1].ai) { this.downLine = ''; return; }
             const line = this.lineAtPoint(e.clientX, e.clientY);
             const tapped = this.downLine;
@@ -58,15 +65,20 @@ export default class DotGame {
                 this.move(line);
             }
         });
-        canvas.addEventListener('pointercancel', () => {
+        onCanvas('pointercancel', () => {
             this.downLine = '';
             this.setHover('');
         });
-        canvas.addEventListener('pointerleave', () => {
+        onCanvas('pointerleave', () => {
             this.setHover('');
         });
         // No context menu on long-press.
-        canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+        onCanvas('contextmenu', (e) => e.preventDefault());
+    }
+    // Detach this game's canvas listeners. Call when the game is replaced
+    // (alongside setting cancelled) so its hover/tap handlers stop firing.
+    destroy() {
+        this._listeners.abort();
     }
     setHover(line) {
         if (this.hoverLine !== line) {
