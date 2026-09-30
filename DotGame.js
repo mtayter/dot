@@ -1,7 +1,7 @@
 import Player from "./Player.js";
 
 export default class DotGame {
-    constructor(height,width,player1,player2,ctx,scoreboard,options = {}) {
+    constructor(height,width,player1,player2,ctx,scoreboard) {
         this.vLines = Array.from({ length: height }, () => Array(width+1).fill(0));
         this.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
         this.squares = Array.from({ length: height }, () => Array(width).fill(0));
@@ -9,20 +9,18 @@ export default class DotGame {
         this.players = [player1,player2];
         this.ctx = ctx;
         this.scoreboard = scoreboard;
-        this.onAIMove = options.onAIMove || null;  // (playerNum, iterations) => void
         this.turn = 1;
         this.sq = undefined;
         this.dt = undefined;
         this.crn = undefined;
-        this.hoverLine = '';   // line id string under the pointer, e.g. 'h,2,3'
-        this.downLine = '';    // line where the current press started (tap detection)
+        this.curLine = '';
 
-/*
+        /*
         0) not testing
         1) PASS: test case for choosing smallest area to give
         2) PASS: 2nd test case for choosing smallest area to give
         3) PASS: 3rd test case for choosing smallest area to give (smallest group of 2s is wrong) - oops, test 2 already covers this...
-        4) AI-heuristic FAIL: test case for knowing when to not take a square
+        4) AI-heurisic FAIL: test case for knowing when to not take a square
         5) PASS: AI wasn't giving a single box before larger areas due to a bug
         6) AI-heuristic FAIL: not best to give smallest available area - ACTUALLY IF OTHER PLAYER IS SMART, THERE IS NO WAY FOR PLAYER 1 TO WIN...
         7) AI-heuristic FAIL: don't take squares
@@ -46,9 +44,9 @@ export default class DotGame {
             this.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
             this.squares = Array.from({ length: height }, () => Array(width).fill(0));
             this.squaresLeft = height * width;
-            document.getElementById('player1Type').value = 'ai-hybrid';
-            document.getElementById('player2Type').value = 'human';
-            this.players[0] = new Player(this.players[0].name,this.players[0].color,this.players[0].hover,'ai-hybrid');
+            document.getElementById('player1Type').selectedIndex = 2;
+            document.getElementById('player2Type').selectedIndex = 0;
+            this.players[0] = new Player(this.players[0].name,this.players[0].color,this.players[0].hover,'ai-mcts');
             this.players[1] = new Player(this.players[1].name,this.players[1].color,this.players[1].hover,'human');
 
             this.players[0].ai = false;
@@ -82,9 +80,9 @@ export default class DotGame {
             this.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
             this.squares = Array.from({ length: height }, () => Array(width).fill(0));
             this.squaresLeft = height * width;
-            document.getElementById('player1Type').value = 'ai-hybrid';
-            document.getElementById('player2Type').value = 'human';
-            this.players[0] = new Player(this.players[0].name,this.players[0].color,this.players[0].hover,'ai-hybrid');
+            document.getElementById('player1Type').selectedIndex = 1;
+            document.getElementById('player2Type').selectedIndex = 0;
+            this.players[0] = new Player(this.players[0].name,this.players[0].color,this.players[0].hover,'ai-heuristic');
             this.players[1] = new Player(this.players[1].name,this.players[1].color,this.players[1].hover,'human');
     
             this.players[0].ai = false;
@@ -120,9 +118,9 @@ export default class DotGame {
             this.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
             this.squares = Array.from({ length: height }, () => Array(width).fill(0));
             this.squaresLeft = height * width;
-            document.getElementById('player1Type').value = 'ai-hybrid';
-            document.getElementById('player2Type').value = 'human';
-            this.players[0] = new Player(this.players[0].name,this.players[0].color,this.players[0].hover,'ai-hybrid');
+            document.getElementById('player1Type').selectedIndex = 1;
+            document.getElementById('player2Type').selectedIndex = 0;
+            this.players[0] = new Player(this.players[0].name,this.players[0].color,this.players[0].hover,'ai-heuristic');
             this.players[1] = new Player(this.players[1].name,this.players[1].color,this.players[1].hover,'human');
     
             this.players[0].ai = false;
@@ -156,10 +154,10 @@ export default class DotGame {
             this.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
             this.squares = Array.from({ length: height }, () => Array(width).fill(0));
             this.squaresLeft = height * width;
-            document.getElementById('player1Type').value = 'human';
-            document.getElementById('player2Type').value = 'ai-hybrid';
+            document.getElementById('player1Type').selectedIndex = 0;
+            document.getElementById('player2Type').selectedIndex = 2;
             this.players[0] = new Player(this.players[0].name,this.players[0].color,this.players[0].hover,'human');
-            this.players[1] = new Player(this.players[1].name,this.players[1].color,this.players[1].hover,'ai-hybrid');
+            this.players[1] = new Player(this.players[1].name,this.players[1].color,this.players[1].hover,'ai-mcts');
     
             this.players[1].ai = false;
             this.move("h,0,3");
@@ -195,9 +193,9 @@ export default class DotGame {
             this.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
             this.squares = Array.from({ length: height }, () => Array(width).fill(0));
             this.squaresLeft = height * width;
-            document.getElementById('player1Type').value = 'ai-hybrid';
-            document.getElementById('player2Type').value = 'human';
-            this.players[0] = new Player(this.players[0].name,this.players[0].color,this.players[0].hover,'ai-hybrid');
+            document.getElementById('player1Type').selectedIndex = 1;
+            document.getElementById('player2Type').selectedIndex = 0;
+            this.players[0] = new Player(this.players[0].name,this.players[0].color,this.players[0].hover,'ai-heuristic');
             this.players[1] = new Player(this.players[1].name,this.players[1].color,this.players[1].hover,'human');
     
             this.players[0].ai = false;
@@ -221,10 +219,10 @@ export default class DotGame {
             this.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
             this.squares = Array.from({ length: height }, () => Array(width).fill(0));
             this.squaresLeft = height * width;
-            document.getElementById('player1Type').value = 'human';
-            document.getElementById('player2Type').value = 'ai-hybrid';
+            document.getElementById('player1Type').selectedIndex = 1;
+            document.getElementById('player2Type').selectedIndex = 0;
             this.players[0] = new Player(this.players[0].name,this.players[0].color,this.players[0].hover,'human');
-            this.players[1] = new Player(this.players[1].name,this.players[1].color,this.players[1].hover,'ai-hybrid');
+            this.players[1] = new Player(this.players[1].name,this.players[1].color,this.players[1].hover,'ai-heuristic');
     
             this.players[1].ai = false;
             this.move("h,0,0");
@@ -274,9 +272,9 @@ export default class DotGame {
             this.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
             this.squares = Array.from({ length: height }, () => Array(width).fill(0));
             this.squaresLeft = height * width;
-            document.getElementById('player1Type').value = 'ai-hybrid';
-            document.getElementById('player2Type').value = 'human';
-            this.players[0] = new Player(this.players[0].name,this.players[0].color,this.players[0].hover,'ai-hybrid');
+            document.getElementById('player1Type').selectedIndex = 2;
+            document.getElementById('player2Type').selectedIndex = 0;
+            this.players[0] = new Player(this.players[0].name,this.players[0].color,this.players[0].hover,'ai-mcts');
             this.players[1] = new Player(this.players[1].name,this.players[1].color,this.players[1].hover,'human');
     
             this.players[0].ai = false;
@@ -321,81 +319,68 @@ export default class DotGame {
             this.move("h,4,2");
         }
 
-        const canvas = this.ctx.canvas;
 
-        // Hover preview (mouse only; touch has no hover).
-        canvas.addEventListener('pointermove', (e) => {
-            if (e.pointerType !== 'mouse') return;
-            if (this.players[this.turn-1].ai) return;
-            this.setHover(this.lineAtPoint(e.clientX, e.clientY));
-        });
+        this.ctx.canvas.onmousemove = (e) => {
 
-        // Tap-to-play: press highlights a line, release on the same line plays it.
-        // This works for mouse clicks and touch taps alike, and ignores drags.
-        canvas.addEventListener('pointerdown', (e) => {
-            if (this.players[this.turn-1].ai) return;
-            e.preventDefault();
-            this.downLine = this.lineAtPoint(e.clientX, e.clientY);
-            this.setHover(this.downLine);
-            try { canvas.setPointerCapture(e.pointerId); } catch (err) { /* noop */ }
-        });
-        canvas.addEventListener('pointerup', (e) => {
-            if (this.players[this.turn-1].ai) { this.downLine = ''; return; }
-            const line = this.lineAtPoint(e.clientX, e.clientY);
-            const tapped = this.downLine;
-            this.downLine = '';
-            this.setHover('');
-            if (line !== '' && line === tapped) {
-                this.move(line);
+            if(this.players[this.turn-1].ai) {
+                return;
             }
-        });
-        canvas.addEventListener('pointercancel', () => {
-            this.downLine = '';
-            this.setHover('');
-        });
-        canvas.addEventListener('pointerleave', () => {
-            this.setHover('');
-        });
-        // No context menu on long-press.
-        canvas.addEventListener('contextmenu', (e) => e.preventDefault());
-    }
-    setHover(line) {
-        if (this.hoverLine !== line) {
-            this.hoverLine = line;
-            this.render();
-        }
-    }
-    // Map a client (page) coordinate to the nearest available line id,
-    // or '' when the pointer isn't on a line.
-    lineAtPoint(clientX, clientY) {
-        const rect = this.ctx.canvas.getBoundingClientRect();
+            const rect = this.ctx.canvas.getBoundingClientRect();
+            
+            // Calculate actual coordinate relative to the internal canvas drawing space
+            let x = (e.clientX - rect.left) * (this.ctx.canvas.width / rect.width);
+            let y = (e.clientY - rect.top) * (this.ctx.canvas.height / rect.height);
 
-        // Coordinate relative to the internal canvas drawing space.
-        let x = (clientX - rect.left) * (this.ctx.canvas.width / rect.width);
-        let y = (clientY - rect.top) * (this.ctx.canvas.height / rect.height);
+            let newLine = '';
+            let o,i,j;
 
-        x = x - (this.crn + this.dt);
-        y = y - (this.crn - this.dt);
-        if(x>0 && x<(this.hLines.length*this.sq)           && (x%this.sq) < (this.sq - 2 * this.dt) &&
-           y>0 && y<(this.vLines.length*this.sq+2*this.dt) && (y%this.sq) < (2 * this.dt)) {
-            const i = Math.trunc(x/this.sq);
-            const j = Math.trunc(y/this.sq);
-            if(this.hLines[i][j] <= 0) {
-                return 'h,' + i + ',' + j;
+            x = x - (this.crn + this.dt);
+            y = y - (this.crn - this.dt);
+            if(x>0 && x<(this.hLines.length*this.sq)           && (x%this.sq) < (this.sq - 2 * this.dt) &&
+               y>0 && y<(this.vLines.length*this.sq+2*this.dt) && (y%this.sq) < (2 * this.dt)) {
+                i = Math.trunc(x/this.sq);
+                j = Math.trunc(y/this.sq);
+                if(this.hLines[i][j] <= 0) {
+                    newLine = 'h' + ',' + i + ',' + j;
+                    this.hLines[i][j] = -this.turn;
+               }
             }
-        }
 
-        x = x + (this.dt * 2);
-        y = y - (this.dt * 2);
-        if(y>0 && y<(this.vLines.length*this.sq)           && (y%this.sq) < (this.sq - 2 * this.dt) &&
-           x>0 && x<(this.hLines.length*this.sq+2*this.dt) && (x%this.sq) < (2 * this.dt)) {
-            const i = Math.trunc(y/this.sq);
-            const j = Math.trunc(x/this.sq);
-            if(this.vLines[i][j] <= 0) {
-                return 'v,' + i + ',' + j;
+            x = x + (this.dt * 2);
+            y = y - (this.dt * 2);
+            if(y>0 && y<(this.vLines.length*this.sq)           && (y%this.sq) < (this.sq - 2 * this.dt) &&
+               x>0 && x<(this.hLines.length*this.sq+2*this.dt) && (x%this.sq) < (2 * this.dt)) {
+                i = Math.trunc(y/this.sq);
+                j = Math.trunc(x/this.sq);
+                if(this.vLines[i][j] <= 0) {
+                    newLine = 'v' + ',' + i + ',' + j;
+                    this.vLines[i][j] = -this.turn;
+               }
             }
+
+            if(this.curLine != newLine) {
+                if(this.curLine != '') {
+                    [o,i,j] = this.curLine.split(',');
+                    if(o == 'h') {
+                        this.hLines[i][j] = 0;
+                    } else if(o =='v') {
+                        this.vLines[i][j] = 0;
+                    }
+                }
+                this.curLine = newLine;
+                this.render();
+            }
+
         }
-        return '';
+        this.ctx.canvas.onclick = (e) => {
+            if(this.players[this.turn-1].ai) {
+                return;
+            }
+            if(this.curLine != '') {
+                this.move(this.curLine);
+                this.curLine = '';
+           }
+        }
     }
     move(m) {
         let o,i,j,p,x,y,closed = false;
@@ -422,28 +407,20 @@ export default class DotGame {
         if(!closed) {
             this.toggleTurn();
         }
-        this.hoverLine = '';
         this.render();
         if(this.squaresLeft == 0) {
             requestAnimationFrame(() => {
-                setTimeout(() => this.showGameOver(), 50);
+                setTimeout(() => {
+                    if(this.scoreboard.whoWon() == 0) {
+                        alert('Tie!');
+                    } else {
+                        alert('Player ' + this.scoreboard.whoWon() + ' Wins!');
+                    }
+                }, 0);
             });
         } else {
             this.checkAImove();
         }
-    }
-    showGameOver() {
-        const winner = this.scoreboard.whoWon();
-        const title = document.getElementById('gameOverTitle');
-        const subtitle = document.getElementById('gameOverSubtitle');
-        const s1 = this.scoreboard.scores[0], s2 = this.scoreboard.scores[1];
-        if (winner == 0) {
-            title.textContent = "It's a tie!";
-        } else {
-            title.textContent = 'Player ' + winner + ' wins!';
-        }
-        subtitle.textContent = s1 + ' – ' + s2;
-        document.getElementById('gameOverBanner').classList.add('show');
     }
     checkClosed(y,x) {
         if(y<0 || x<0 || y >= this.vLines.length || x >= this.hLines.length) {
@@ -479,15 +456,14 @@ export default class DotGame {
         let x,y,rx, ry, rw, rh, rp, c;
         for(x=0; x<this.hLines.length; x++) {
             for(y=0; y<this.hLines[x].length; y++) {
-                const key = 'h,' + x + ',' + y;
-                if(this.hLines[x][y] != 0 || key === this.hoverLine) {
+                if(this.hLines[x][y] != 0) {
                     rx = this.sq/2 + this.dt + x*this.sq;
                     ry = this.sq/2 - this.dt + y*this.sq;
                     rw = this.sq-this.dt*2;
                     rh = this.dt*2;
                     rp = this.hLines[x][y];
-                    if(rp == 0) {
-                        c = this.players[this.turn-1].hover;
+                    if(rp<0) {
+                        c = this.players[-rp-1].hover;
                     } else {
                         c = this.players[rp-1].color;
                     }
@@ -497,15 +473,14 @@ export default class DotGame {
         }
         for(y=0; y<this.vLines.length; y++) {
             for(x=0; x<this.vLines[y].length; x++) {
-                const key = 'v,' + y + ',' + x;
-                if(this.vLines[y][x] != 0 || key === this.hoverLine) {
+                if(this.vLines[y][x] != 0) {
                     rx = this.sq/2 - this.dt + x*this.sq;
                     ry = this.sq/2 + this.dt + y*this.sq;
                     rw = this.dt*2;
                     rh = this.sq-this.dt*2;
                     rp = this.vLines[y][x];
-                    if(rp == 0) {
-                        c = this.players[this.turn-1].hover;
+                    if(rp<0) {
+                        c = this.players[-rp-1].hover;
                     } else {
                         c = this.players[rp-1].color;
                     }
@@ -542,9 +517,11 @@ export default class DotGame {
     }
     // Resolve after the browser has actually painted. A single
     // requestAnimationFrame fires before the paint, so awaiting just one
-    // still lets a blocking AI think before the previous move appears.
-    // The nested second frame runs after the paint. The timeout is a
-    // fallback for when frames are throttled, e.g. in a hidden tab.
+    // still lets a blocking AI think before the previous move appears
+    // (this only happened to work for AI-vs-AI, where the previous move
+    // was painted a full frame earlier). The nested second frame runs
+    // after the paint. The timeout is a fallback for when frames are
+    // throttled, e.g. in a hidden tab.
     waitForPaint() {
         return new Promise(resolve => {
             const fallback = setTimeout(resolve, 100);
@@ -555,14 +532,13 @@ export default class DotGame {
         });
     }
     async checkAImove() {
+        const curPlayer = this.turn - 1;
+        const oppPlayer = 1 - curPlayer;
         if(this.players[this.turn-1].ai) {
             // Let the browser paint the previous move before the AI blocks
             // the main thread while thinking.
             await this.waitForPaint();
-            const playerNum = this.turn;
-            const engine = this.players[this.turn-1].aiEngine;
-            const m = await engine.move(this.hLines,this.vLines,this.squaresLeft);
-            if (this.onAIMove) this.onAIMove(playerNum, engine.lastIterations || 0, !!engine.lastExact);
+            const m = await this.players[this.turn-1].aiEngine.move(this.hLines,this.vLines,this.squaresLeft);
             this.move(m);
         }
     }
