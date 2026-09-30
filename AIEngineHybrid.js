@@ -22,8 +22,11 @@
 // When this many (or fewer) lines remain, solve the endgame exactly with
 // negamax + alpha-beta + transposition table instead of running MCTS.
 // Benchmarked (5x5, random positions): 12 empties ~110ms, 14 ~330ms,
-// 16 ~850ms, 18 ~1500ms. Take-rich endgames solve much faster.
-const SOLVER_MAX_MOVES = 16;   // at most this many empty lines -> solve exactly
+// 16 ~850ms, 18 ~1500ms. Take-rich endgames solve much faster. Cost is
+// highly position-dependent, not just a function of empty count: structured
+// loony endgames fly (test 6: 27 empties ~510ms, 26 empties ~1260ms), while
+// messy midgame positions blow the budget and fall back to MCTS via abort.
+const SOLVER_MAX_MOVES = 27;   // at most this many empty lines -> solve exactly
 const SOLVER_TIME_MS = 2000;   // solver time cap; falls back to MCTS on abort
 
 function popcount(b) {
@@ -297,7 +300,7 @@ export default class AIEngineHybrid {
         // The solver gets most of the time budget; on abort we fall back
         // to MCTS with whatever time remains.
         if (moves.length <= SOLVER_MAX_MOVES) {
-            const solverDeadline = Date.now() + Math.min(1200, this.thinkMs * 0.7);
+            const solverDeadline = Date.now() + Math.min(2000, this.thinkMs * 0.7);
             try {
                 const mv = lineToString(b, solveRoot(b, hBits, vBits, moves, solverDeadline));
                 this.lastExact = true;
