@@ -71,40 +71,12 @@
                 <input type="button" value="New Game" id="newGameButton">
             </fieldset>
         </aside>
-        <!-- Test harness: pick a scripted AI test case, then press New Game -->
-        <div id="test-dropdown-container" style="position: fixed;
-                                                top: 10px;
-                                                right: 10px;
-                                                z-index: 9999;
-                                                background: rgba(255, 255, 255, 0.95);
-                                                padding: 8px 12px;
-                                                border: 1px solid #ccc;
-                                                border-radius: 4px;
-                                                box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-                                                font-family: Arial, sans-serif;
-                                                font-size: 14px;">
-        <label for="test-select" style="margin-right: 5px; font-weight: bold; color: #333;">Test:</label>
-        <select id="test-select" style="padding: 4px;
-                                        border-radius: 4px;
-                                        border: 1px solid #999;
-                                        background-color: #fff;
-                                        cursor: pointer;">
-        <option value="0"></option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        </select>
-        </div>
     </main>
     <div id="gameOverBanner" class="game-over-banner" role="dialog" aria-live="polite">
         <div class="game-over-card">
             <h2 id="gameOverTitle">Player 1 wins!</h2>
             <p id="gameOverSubtitle">0 – 0</p>
-            <button id="playAgainButton">Play again</button>
+            <button id="okButton">OK</button>
         </div>
     </div>
     <footer></footer>
