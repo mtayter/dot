@@ -87,6 +87,9 @@ function init() {
         });
         scoreboard.reset();
         dotGame.render();
+        // setupTestCase() may have rewritten the player-type selects
+        // programmatically (no 'change' event), so re-sync the Think sliders.
+        updateThinkVisibility();
     }
     newGameButton.addEventListener('click', newGame);
     // Dismiss the result banner: OK button or a click on the backdrop
