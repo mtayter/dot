@@ -110,6 +110,25 @@ function init() {
     }
     window.addEventListener('resize', handleResize)
     handleResize();
+
+    // Easter egg: the Konami code (up up down down left right left right B A)
+    // toggles the hidden dev test panel.
+    const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+                            'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+                            'b', 'a'];
+    let konamiProgress = 0;
+    document.addEventListener('keydown', (e) => {
+        const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+        if (key === konamiSequence[konamiProgress]) {
+            konamiProgress++;
+            if (konamiProgress === konamiSequence.length) {
+                konamiProgress = 0;
+                document.getElementById('testBox').classList.toggle('hidden');
+            }
+        } else {
+            konamiProgress = (key === konamiSequence[0]) ? 1 : 0;
+        }
+    });
 }
 
 init();

@@ -189,6 +189,18 @@
   width: 100%;
 }
 
+/* Dev test panel: its own little box, hidden until the Konami code. */
+.test-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 12px;
+  margin-top: 12px;
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
 /* Compact think slider row living under its player's dropdown */
 .think-inline {
   display: flex;
