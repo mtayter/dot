@@ -192,6 +192,14 @@
   border-color: #0076ff; /* Highlight matching user interaction focus */
 }
 
+/* Test-panel dropdowns: shrink to fit the 340px panel instead of letting
+   long option text blow out the fieldset's min-content width. */
+.test-select {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+}
+
 
   /* ==========================================================================
      6. Semantic Configuration Panel & Sliders
@@ -202,6 +210,9 @@
     flex-direction: column;
     gap: 1.25rem;
     width: 100%;
+    /* fieldset defaults to min-width: min-content, which let the long
+       test-case option text force the whole panel wider than 340px */
+    min-width: 0;
     margin-top: auto; /* Dynamically pushes entire setup container to layout floor */
   }
 
@@ -222,6 +233,7 @@
     flex-direction: row;
     gap: 1rem;
     align-items: center;
+    min-width: 0;
   }
 
   .control-group label {
@@ -239,6 +251,7 @@
     -webkit-appearance: none;
     appearance: none;
     flex: 1;
+    min-width: 0;
     height: 6px;
     background: var(--border-color);
     border-radius: 3px;

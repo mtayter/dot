@@ -72,7 +72,7 @@
 
                 <div class="control-group">
                 <label for="test-select">Test case</label>
-                <select id="test-select" class="toggle-select" aria-label="Test case">
+                <select id="test-select" class="toggle-select test-select" aria-label="Test case">
                     <option value="0" selected>0: not testing</option>
                     <option value="1">1: smallest area to give</option>
                     <option value="2">2: smallest area to give (2nd)</option>
@@ -81,6 +81,13 @@
                     <option value="5">5: single box vs larger areas</option>
                     <option value="6">6: smallest available area</option>
                     <option value="7">7: don't take squares</option>
+                </select>
+                </div>
+                <div class="control-group">
+                <label for="test-ai">Test AI</label>
+                <select id="test-ai" class="toggle-select test-select" aria-label="Test AI">
+                    <option value="ai-heuristic">AI-Heuristic</option>
+                    <option value="ai-hybrid" selected>AI-Hybrid</option>
                 </select>
                 </div>
             </fieldset>
