@@ -144,13 +144,14 @@
     gap: 0.25rem;
     padding: 0.75rem 0.25rem;
     border-radius: 8px;
-    border: 3px solid rgba(255, 255, 255, 0.25);
+    border: 5px solid rgba(255, 255, 255, 0.25);
   }
 
   #p1Card { background-color: #BF616A; }
   #p2Card { background-color: #5E81AC; }
 
-  #p1Card.active, #p2Card.active { border-color: #ffffff; }
+  #p1Card.active { border-color: #4a1f24; }
+  #p2Card.active { border-color: #1e2f47; }
 
   .score-side .score-name {
     font-size: 0.75rem;
