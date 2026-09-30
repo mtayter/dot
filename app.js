@@ -111,6 +111,11 @@ function init() {
     window.addEventListener('resize', handleResize)
     handleResize();
 
+    // The X in the test panel corner hides it (no code needed to close).
+    document.getElementById('testBoxClose').addEventListener('click', () => {
+        document.getElementById('testBox').classList.add('hidden');
+    });
+
     // Easter egg: the Konami code (up up down down left right left right B A)
     // toggles the hidden dev test panel.
     const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
