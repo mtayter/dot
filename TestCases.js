@@ -28,7 +28,8 @@ import Player from "./Player.js";
  * @param {object} game - the DotGame under construction (its board arrays,
  *                        players, move() and checkAImove() are all used)
  * @param {string|number} testCase - selected case; "0" means not testing
- * @param {string} testAI - engine under test: 'ai-heuristic' or 'ai-hybrid'
+ * @param {string} testAI - player under test: 'ai-heuristic', 'ai-hybrid', or
+ *                         'human' (you play the test seat yourself)
  */
 export function setupTestCase(game, testCase, testAI) {
     let height, width;
@@ -69,7 +70,7 @@ export function setupTestCase(game, testCase, testAI) {
             game.move("v,2,1");
             game.move("v,2,2");
             game.move("v,3,0");
-            game.players[0].ai = true;
+            if (testAI !== 'human') game.players[0].ai = true;
             game.move("v,3,3");
         }
 
@@ -107,7 +108,7 @@ export function setupTestCase(game, testCase, testAI) {
             game.move("v,1,3");
             game.move("v,2,0");
             game.move("v,2,3");
-            game.players[0].ai = true;
+            if (testAI !== 'human') game.players[0].ai = true;
             game.move("v,3,3");
         }
 
@@ -143,7 +144,7 @@ export function setupTestCase(game, testCase, testAI) {
             game.move("v,3,1");
             game.move("v,3,2");
             game.move("v,4,0");
-            game.players[0].ai = true;
+            if (testAI !== 'human') game.players[0].ai = true;
             game.move("v,4,2");
         }
 
@@ -182,7 +183,7 @@ export function setupTestCase(game, testCase, testAI) {
             game.move("v,1,3");
             game.move("v,2,0");
             game.move("v,2,3");
-            game.players[1].ai = true;
+            if (testAI !== 'human') game.players[1].ai = true;
             game.move("v,3,3");
         }
 
@@ -208,7 +209,7 @@ export function setupTestCase(game, testCase, testAI) {
             game.move("h,1,2");
             game.move("v,0,0");
             game.move("v,0,1");
-            game.players[0].ai = true;
+            if (testAI !== 'human') game.players[0].ai = true;
             game.move("v,1,0");
         }
 
@@ -261,7 +262,7 @@ export function setupTestCase(game, testCase, testAI) {
             game.move("v,4,0");
             game.move("v,4,1");
             game.move("v,4,3");
-            game.players[1].ai = true;
+            if (testAI !== 'human') game.players[1].ai = true;
             game.move("v,4,5");
         }
 
@@ -319,7 +320,7 @@ export function setupTestCase(game, testCase, testAI) {
             game.move("h,3,4");
             game.move("v,4,4");
             game.move("h,4,4");
-            game.players[0].ai = true;
+            if (testAI !== 'human') game.players[0].ai = true;
             game.move("h,4,2");
         }
 
@@ -371,7 +372,7 @@ export function setupTestCase(game, testCase, testAI) {
             game.move("h,2,4");
             game.move("v,3,3");
             game.move("h,1,4");
-            game.players[1].ai = true;
+            if (testAI !== 'human') game.players[1].ai = true;
             game.move("h,0,4");
         }
 }
