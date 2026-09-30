@@ -1,0 +1,321 @@
+import Player from "./Player.js";
+
+/*
+        0) not testing
+        1) PASS: test case for choosing smallest area to give
+        2) PASS: 2nd test case for choosing smallest area to give
+        3) PASS: 3rd test case for choosing smallest area to give (smallest group of 2s is wrong) - oops, test 2 already covers this...
+        4) AI-heuristic FAIL: test case for knowing when to not take a square
+        5) PASS: AI wasn't giving a single box before larger areas due to a bug
+        6) AI-heuristic FAIL: not best to give smallest available area - ACTUALLY IF OTHER PLAYER IS SMART, THERE IS NO WAY FOR PLAYER 1 TO WIN...
+        7) AI-heuristic FAIL: don't take squares
+        */
+
+
+/**
+ * Test-case harness for AI behavior testing, extracted from the DotGame
+ * constructor. Loads a preset board position into a brand-new game so an AI
+ * engine's move in that spot can be inspected.
+ *
+ * The dropdown labels live on the #test-select element in index.html; the
+ * values here ("0"-"7") must stay in sync with those <option> values.
+ * The engine under test comes from the #test-ai select.
+ *
+ * @param {object} game - the DotGame under construction (its board arrays,
+ *                        players, move() and checkAImove() are all used)
+ * @param {string|number} testCase - selected case; "0" means not testing
+ * @param {string} testAI - engine under test: 'ai-heuristic' or 'ai-hybrid'
+ */
+export function setupTestCase(game, testCase, testAI) {
+    let height, width;
+
+        if(testCase == 0) {
+            game.checkAImove();
+        }
+
+	    if(testCase == 1) {
+            height = 4;
+            width = 3;
+            document.getElementById('heightRange').value = height;
+            document.getElementById('widthRange').value = width;
+            document.getElementById('heightValue').textContent = height;
+            document.getElementById('widthValue').textContent = width;
+            game.vLines = Array.from({ length: height }, () => Array(width+1).fill(0));
+            game.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
+            game.squares = Array.from({ length: height }, () => Array(width).fill(0));
+            game.squaresLeft = height * width;
+            document.getElementById('player1Type').value = testAI;
+            document.getElementById('player2Type').value = 'human';
+            game.players[0] = new Player(game.players[0].name,game.players[0].color,game.players[0].hover,testAI);
+            game.players[1] = new Player(game.players[1].name,game.players[1].color,game.players[1].hover,'human');
+
+            game.players[0].ai = false;
+            game.move("h,0,0");
+            game.move("h,0,2");
+            game.move("h,0,4");
+            game.move("h,1,0");
+            game.move("h,1,4");
+            game.move("h,2,0");
+            game.move("h,2,2");
+            game.move("h,2,4");
+            game.move("v,0,1");
+            game.move("v,0,3");
+            game.move("v,1,1");
+            game.move("v,1,3");
+            game.move("v,2,1");
+            game.move("v,2,2");
+            game.move("v,3,0");
+            game.players[0].ai = true;
+            game.move("v,3,3");
+        }
+
+        if(testCase == 2) {
+            height = 4;
+            width = 3;
+            document.getElementById('heightRange').value = height;
+            document.getElementById('widthRange').value = width;
+            document.getElementById('heightValue').textContent = height;
+            document.getElementById('widthValue').textContent = width;
+            game.vLines = Array.from({ length: height }, () => Array(width+1).fill(0));
+            game.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
+            game.squares = Array.from({ length: height }, () => Array(width).fill(0));
+            game.squaresLeft = height * width;
+            document.getElementById('player1Type').value = testAI;
+            document.getElementById('player2Type').value = 'human';
+            game.players[0] = new Player(game.players[0].name,game.players[0].color,game.players[0].hover,testAI);
+            game.players[1] = new Player(game.players[1].name,game.players[1].color,game.players[1].hover,'human');
+    
+            game.players[0].ai = false;
+            game.move("h,0,0");
+            game.move("h,0,3");
+            game.move("h,0,4");
+            game.move("h,1,0");
+            game.move("h,1,1");
+            game.move("h,1,2");
+            game.move("h,1,3");
+            game.move("h,1,4");
+            game.move("h,2,0");
+            game.move("h,2,2");
+            game.move("h,2,4");
+            game.move("v,0,0");
+            game.move("v,0,3");
+            game.move("v,1,0");
+            game.move("v,1,3");
+            game.move("v,2,0");
+            game.move("v,2,3");
+            game.players[0].ai = true;
+            game.move("v,3,3");
+        }
+
+        if(testCase == 3) {
+            height = 5;
+            width = 2;
+            document.getElementById('heightRange').value = height;
+            document.getElementById('widthRange').value = width;
+            document.getElementById('heightValue').textContent = height;
+            document.getElementById('widthValue').textContent = width;
+            game.vLines = Array.from({ length: height }, () => Array(width+1).fill(0));
+            game.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
+            game.squares = Array.from({ length: height }, () => Array(width).fill(0));
+            game.squaresLeft = height * width;
+            document.getElementById('player1Type').value = testAI;
+            document.getElementById('player2Type').value = 'human';
+            game.players[0] = new Player(game.players[0].name,game.players[0].color,game.players[0].hover,testAI);
+            game.players[1] = new Player(game.players[1].name,game.players[1].color,game.players[1].hover,'human');
+    
+            game.players[0].ai = false;
+            game.move("h,0,0");
+            game.move("h,0,5");
+            game.move("h,1,0");
+            game.move("h,1,2");
+            game.move("h,1,5");
+            game.move("v,0,0");
+            game.move("v,0,2");
+            game.move("v,1,0");
+            game.move("v,1,2");
+            game.move("v,2,0");
+            game.move("v,2,1");
+            game.move("v,3,0");
+            game.move("v,3,1");
+            game.move("v,3,2");
+            game.move("v,4,0");
+            game.players[0].ai = true;
+            game.move("v,4,2");
+        }
+
+        if(testCase == 4) {
+            height = 4;
+            width = 3;
+            document.getElementById('heightRange').value = height;
+            document.getElementById('widthRange').value = width;
+            document.getElementById('heightValue').textContent = height;
+            document.getElementById('widthValue').textContent = width;
+            game.vLines = Array.from({ length: height }, () => Array(width+1).fill(0));
+            game.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
+            game.squares = Array.from({ length: height }, () => Array(width).fill(0));
+            game.squaresLeft = height * width;
+            document.getElementById('player1Type').value = 'human';
+            document.getElementById('player2Type').value = testAI;
+            game.players[0] = new Player(game.players[0].name,game.players[0].color,game.players[0].hover,'human');
+            game.players[1] = new Player(game.players[1].name,game.players[1].color,game.players[1].hover,testAI);
+    
+            game.players[1].ai = false;
+            game.move("h,0,3");
+            game.move("h,0,4");
+            game.move("h,1,0");
+            game.move("h,1,2");
+            game.move("h,1,3");
+            game.move("h,1,4");
+            game.move("h,2,0");
+            game.move("h,2,2");
+            game.move("h,2,4");
+            game.move("v,0,0");
+            game.move("v,0,1");
+            game.move("v,0,2");
+            game.move("v,0,3");
+            game.move("v,1,0");
+            game.move("v,1,1");
+            game.move("v,1,3");
+            game.move("v,2,0");
+            game.move("v,2,3");
+            game.players[1].ai = true;
+            game.move("v,3,3");
+        }
+
+        if(testCase == 5) {
+            height = 2;
+            width = 2;
+            document.getElementById('heightRange').value = height;
+            document.getElementById('widthRange').value = width;
+            document.getElementById('heightValue').textContent = height;
+            document.getElementById('widthValue').textContent = width;
+            game.vLines = Array.from({ length: height }, () => Array(width+1).fill(0));
+            game.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
+            game.squares = Array.from({ length: height }, () => Array(width).fill(0));
+            game.squaresLeft = height * width;
+            document.getElementById('player1Type').value = testAI;
+            document.getElementById('player2Type').value = 'human';
+            game.players[0] = new Player(game.players[0].name,game.players[0].color,game.players[0].hover,testAI);
+            game.players[1] = new Player(game.players[1].name,game.players[1].color,game.players[1].hover,'human');
+    
+            game.players[0].ai = false;
+            game.move("h,0,2");
+            game.move("h,1,1");
+            game.move("h,1,2");
+            game.move("v,0,0");
+            game.move("v,0,1");
+            game.players[0].ai = true;
+            game.move("v,1,0");
+        }
+
+        if(testCase == 6) {
+            height = 5;
+            width = 5;
+            document.getElementById('heightRange').value = height;
+            document.getElementById('widthRange').value = width;
+            document.getElementById('heightValue').textContent = height;
+            document.getElementById('widthValue').textContent = width;
+            game.vLines = Array.from({ length: height }, () => Array(width+1).fill(0));
+            game.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
+            game.squares = Array.from({ length: height }, () => Array(width).fill(0));
+            game.squaresLeft = height * width;
+            document.getElementById('player1Type').value = 'human';
+            document.getElementById('player2Type').value = testAI;
+            game.players[0] = new Player(game.players[0].name,game.players[0].color,game.players[0].hover,'human');
+            game.players[1] = new Player(game.players[1].name,game.players[1].color,game.players[1].hover,testAI);
+    
+            game.players[1].ai = false;
+            game.move("h,0,0");
+            game.move("h,1,0");
+            game.move("h,1,5");
+            game.move("h,2,5");
+            game.move("h,3,0");
+            game.move("h,3,5");
+            game.move("h,4,0");
+            game.move("h,4,2");
+            game.move("h,4,5");
+            game.move("v,0,0");
+            game.move("v,0,2");
+            game.move("v,0,3");
+            game.move("v,0,5");
+            game.move("v,1,0");
+            game.move("v,1,1");
+            game.move("v,1,2");
+            game.move("v,1,3");
+            game.move("v,1,5");
+            game.move("v,2,0");
+            game.move("v,2,1");
+            game.move("v,2,2");
+            game.move("v,2,3");
+            game.move("v,2,4");
+            game.move("v,3,0");
+            game.move("v,3,1");
+            game.move("v,3,2");
+            game.move("v,3,3");
+            game.move("v,3,4");
+            game.move("v,3,5");
+            game.move("v,4,0");
+            game.move("v,4,1");
+            game.move("v,4,3");
+            game.players[1].ai = true;
+            game.move("v,4,5");
+        }
+
+        if(testCase == 7) {
+            height = 5;
+            width = 5;
+            document.getElementById('heightRange').value = height;
+            document.getElementById('widthRange').value = width;
+            document.getElementById('heightValue').textContent = height;
+            document.getElementById('widthValue').textContent = width;
+            game.vLines = Array.from({ length: height }, () => Array(width+1).fill(0));
+            game.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
+            game.squares = Array.from({ length: height }, () => Array(width).fill(0));
+            game.squaresLeft = height * width;
+            document.getElementById('player1Type').value = testAI;
+            document.getElementById('player2Type').value = 'human';
+            game.players[0] = new Player(game.players[0].name,game.players[0].color,game.players[0].hover,testAI);
+            game.players[1] = new Player(game.players[1].name,game.players[1].color,game.players[1].hover,'human');
+    
+            game.players[0].ai = false;
+            game.move("h,0,0");
+            game.move("h,1,0");
+            game.move("h,1,5");
+            game.move("h,2,5");
+            game.move("h,3,0");
+            game.move("h,3,5");
+            game.move("h,4,0");
+            game.move("h,4,5");
+            game.move("v,0,0");
+            game.move("v,0,2");
+            game.move("v,0,3");
+            game.move("v,0,5");
+            game.move("v,1,0");
+            game.move("v,1,1");
+            game.move("v,1,2");
+            game.move("v,1,3");
+            game.move("v,1,5");
+            game.move("v,2,0");
+            game.move("v,2,1");
+            game.move("v,2,2");
+            game.move("v,2,3");
+            game.move("v,2,4");
+            game.move("v,3,0");
+            game.move("v,3,1");
+            game.move("v,3,2");
+            game.move("v,3,3");
+            game.move("v,3,4");
+            game.move("v,3,5");
+            game.move("v,4,0");
+            game.move("v,4,1");
+            game.move("v,4,3");
+            game.move("v,4,5");
+            game.move("h,3,2");
+            game.move("h,3,3");
+            game.move("h,3,4");
+            game.move("v,4,4");
+            game.move("h,4,4");
+            game.players[0].ai = true;
+            game.move("h,4,2");
+        }
+}
