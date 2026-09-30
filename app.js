@@ -86,6 +86,9 @@ function init() {
             }
         });
         scoreboard.reset();
+        // setupTestCase() may leave P2 to move (e.g. test 8); reset() always
+        // marks P1 active, so re-sync the indicator to the actual turn.
+        scoreboard.switchActivePlayer(dotGame.turn);
         dotGame.render();
         // setupTestCase() may have rewritten the player-type selects
         // programmatically (no 'change' event), so re-sync the Think sliders.
