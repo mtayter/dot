@@ -16,6 +16,7 @@ export default class DotGame {
         this.crn = undefined;
         this.hoverLine = '';   // line id string under the pointer, e.g. 'h,2,3'
         this.downLine = '';    // line where the current press started (tap detection)
+        this.cancelled = false; // set true when a new game abandons this one mid-think
 
 /*
         0) not testing
@@ -426,7 +427,7 @@ export default class DotGame {
         this.render();
         if(this.squaresLeft == 0) {
             requestAnimationFrame(() => {
-                setTimeout(() => this.showGameOver(), 50);
+                setTimeout(() => { if (!this.cancelled) this.showGameOver(); }, 50);
             });
         } else {
             this.checkAImove();
@@ -555,13 +556,19 @@ export default class DotGame {
         });
     }
     async checkAImove() {
+        // Abandoned games (new game started while the AI was thinking) must
+        // not keep playing: their move() calls render() on the same shared
+        // canvas, flashing the old board over the new game.
+        if (this.cancelled) return;
         if(this.players[this.turn-1].ai) {
             // Let the browser paint the previous move before the AI blocks
             // the main thread while thinking.
             await this.waitForPaint();
+            if (this.cancelled) return;
             const playerNum = this.turn;
             const engine = this.players[this.turn-1].aiEngine;
             const m = await engine.move(this.hLines,this.vLines,this.squaresLeft);
+            if (this.cancelled) return;
             if (this.onAIMove) this.onAIMove(playerNum, engine.lastIterations || 0, !!engine.lastExact);
             this.move(m);
         }
