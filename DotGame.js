@@ -30,7 +30,9 @@ export default class DotGame {
         */
 
         const testSel = document.getElementById('test-select');
-        const testCase = testSel.options[testSel.selectedIndex].value;
+        // The test-case <select> isn't in the page (test harness UI was removed);
+        // default to 0 ("not testing") instead of throwing on New Game.
+        const testCase = testSel ? testSel.options[testSel.selectedIndex].value : 0;
 
         if(testCase == 0) {
             this.checkAImove();
