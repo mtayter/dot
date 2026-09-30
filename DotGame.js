@@ -22,11 +22,14 @@ export default class DotGame {
         // Test-case harness (preset board positions for AI behavior testing)
         // lives in TestCases.js. Both selects are optional: with no test UI
         // present this is just a normal game (case 0, default test AI).
+        // If the test panel is hidden, that's also a normal game.
         const testSel = document.getElementById('test-select');
         const testAIEl = document.getElementById('test-ai');
+        const testBox = document.getElementById('testBox');
+        const testing = testSel && testBox && !testBox.classList.contains('hidden');
         setupTestCase(
             this,
-            testSel ? testSel.options[testSel.selectedIndex].value : 0,
+            testing ? testSel.options[testSel.selectedIndex].value : 0,
             testAIEl ? testAIEl.value : 'ai-hybrid'
         );
 
