@@ -9,6 +9,10 @@ import Player from "./Player.js";
         5) PASS: AI wasn't giving a single box before larger areas due to a bug
         6) AI-heuristic FAIL: not best to give smallest available area - ACTUALLY IF OTHER PLAYER IS SMART, THERE IS NO WAY FOR PLAYER 1 TO WIN...
         7) AI-heuristic FAIL: don't take squares
+        8) PASS: loop hardhearted handout - AI as controller takes all-but-4 from an
+           offered 6-loop, then offers the remaining 4 (instead of taking them),
+           keeping control; opponent takes 4 and must open the 6-chain, which the
+           AI sweeps. Taking all 6 only ties 6-6; the handout wins 8-4.
         */
 
 
@@ -18,7 +22,7 @@ import Player from "./Player.js";
  * engine's move in that spot can be inspected.
  *
  * The dropdown labels live on the #test-select element in index.html; the
- * values here ("0"-"7") must stay in sync with those <option> values.
+ * values here ("0"-"8") must stay in sync with those <option> values.
  * The engine under test comes from the #test-ai select.
  *
  * @param {object} game - the DotGame under construction (its board arrays,
@@ -317,5 +321,57 @@ export function setupTestCase(game, testCase, testAI) {
             game.move("h,4,4");
             game.players[0].ai = true;
             game.move("h,4,2");
+        }
+
+        if(testCase == 8) {
+            // Loop hardhearted handout. 4x3 board: a 6-loop (rows 0-1, cols 0-2)
+            // offered via the shared edge v,0,1 (two 3-sided boxes), plus a 6-chain
+            // snaking through rows 2-3: (2,0)-(2,1)-(2,2)-(3,2)-(3,1)-(3,0).
+            // 19 preset moves, no takes, so player 2 (the AI) is to move.
+            // The AI is the controller. Optimal play (verified with the exact
+            // solver): take 2 from the loop (h,0,1 takes (0,0), then v,0,2 takes
+            // (0,1)), then STOP taking and offer the remaining 4 with the double
+            // loony v,1,2. The opponent takes those 4 and must open the chain,
+            // which the AI sweeps. Final 8-4, AI wins. Taking all 6 loop boxes
+            // instead only ties 6-6, so this tests the leave-4 rule for loops.
+            height = 4;
+            width = 3;
+            document.getElementById('heightRange').value = height;
+            document.getElementById('widthRange').value = width;
+            document.getElementById('heightValue').textContent = height;
+            document.getElementById('widthValue').textContent = width;
+            game.vLines = Array.from({ length: height }, () => Array(width+1).fill(0));
+            game.hLines = Array.from({ length: width }, () => Array(height+1).fill(0));
+            game.squares = Array.from({ length: height }, () => Array(width).fill(0));
+            game.squaresLeft = height * width;
+            document.getElementById('player1Type').value = 'human';
+            document.getElementById('player2Type').value = testAI;
+            game.players[0] = new Player(game.players[0].name,game.players[0].color,game.players[0].hover,'human');
+            game.players[1] = new Player(game.players[1].name,game.players[1].color,game.players[1].hover,testAI);
+
+            game.players[1].ai = false;
+            // 6-loop walls (rows 0-1, cols 0-2)
+            game.move("h,0,0");
+            game.move("h,1,0");
+            game.move("h,2,0");
+            game.move("h,1,1");
+            game.move("h,2,2");
+            game.move("h,1,2");
+            game.move("h,0,2");
+            game.move("v,0,0");
+            game.move("v,0,3");
+            game.move("v,1,3");
+            game.move("v,1,0");
+            // loony offer: shared edge gives (0,0) and (0,1) their 3rd sides
+            game.move("v,0,1");
+            // 6-chain snake walls: (2,0)-(2,1)-(2,2)-(3,2)-(3,1)-(3,0)
+            game.move("h,0,3");
+            game.move("h,1,3");
+            game.move("v,2,3");
+            game.move("h,2,4");
+            game.move("v,3,3");
+            game.move("h,1,4");
+            game.players[1].ai = true;
+            game.move("h,0,4");
         }
 }
