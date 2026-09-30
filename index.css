@@ -120,6 +120,15 @@
     width: 100%;
   }
 
+  /* Scores get their own box at the top, like the test box at the bottom. */
+  .score-box {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+
   .score-card {
     display: flex;
     flex-direction: column;
@@ -127,7 +136,7 @@
     gap: 0.25rem;
     padding: 0.75rem;
     background-color: var(--bg-color);
-    border: 1px solid var(--border-color);
+    border: 1px solid transparent;
     border-radius: 8px;
   }
 
@@ -171,7 +180,6 @@
   padding: 6px 12px;
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 6px;
-  margin-top: -4px;  /* Tightly seats the container to the scoreboard bottom */
   margin-bottom: 12px;
 }
 
