@@ -115,7 +115,11 @@
     border: 1px solid var(--border-color);
     border-radius: var(--radius);
     box-shadow: var(--shadow-md);
-    padding: 16px 12px; /* breathing room so content isn't jammed */
+    padding: 24px 16px; /* breathing room so content isn't jammed */
+    flex: 1 1 0; /* share the sidebar's full height equally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   /* ==========================================================================
@@ -129,31 +133,29 @@
     width: 100%;
   }
 
-  .score-card {
+  /* Scores sit directly in the box — no inner cards. Names take the
+     player's board color; the side to move gets a wash of that color. */
+  .score-side {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.25rem;
-    padding: 0.75rem;
-    background-color: var(--bg-color);
-    border: none;
+    padding: 0.75rem 0.25rem;
     border-radius: 8px;
   }
 
-  .score-card.active {
-    background-color: rgba(59, 130, 246, 0.08);
-  }
-
-  .score-card label {
+  .score-side .score-name {
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
-  .score-card output {
-    font-size: 1.75rem;
+  #p1Card .score-name { color: #BF616A; }
+  #p2Card .score-name { color: #5E81AC; }
+
+  .score-side output {
+    font-size: 2rem;
     font-weight: 700;
     color: var(--text-primary);
     font-variant-numeric: tabular-nums;
@@ -199,13 +201,8 @@
 /* Dev test panel: its own little box, hidden until the Konami code. */
 .test-box {
   position: relative;
-  display: flex;
-  flex-direction: column;
   gap: 1rem;
-  padding-top: 28px; /* clearance so the X doesn't sit on the dropdown */
-  border-style: dashed; /* dev panel, distinct from the solid boxes */
-  background-color: rgba(255, 255, 255, 0.03);
-  box-shadow: none;
+  padding-top: 32px; /* clearance so the X doesn't sit on the dropdown */
 }
 
 .test-box-close {

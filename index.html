@@ -16,13 +16,13 @@
             <!-- Box 1 (right): scores -->
             <div class="panel-box score-box">
             <section class="score-board" aria-label="Player Scores">
-                <div class="score-card active" id="p1Card">
-                <label for="player1Score">Player 1</label>
+                <div class="score-side active" id="p1Card">
+                <span class="score-name">Player 1</span>
                 <output id="player1Score">0</output>
                 <div class="player-iters" id="p1Iters"></div>
                 </div>
-                <div class="score-card" id="p2Card">
-                <label for="player2Score">Player 2</label>
+                <div class="score-side" id="p2Card">
+                <span class="score-name">Player 2</span>
                 <output id="player2Score">0</output>
                 <div class="player-iters" id="p2Iters"></div>
                 </div>
@@ -82,8 +82,7 @@
                 <div class="control-group">
                 <label for="test-select">Test case</label>
                 <select id="test-select" class="toggle-select test-select" aria-label="Test case">
-                    <option value="0" selected>0: not testing</option>
-                    <option value="1">1: smallest area to give</option>
+                    <option value="1" selected>1: smallest area to give</option>
                     <option value="2">2: smallest area to give (2nd)</option>
                     <option value="3">3: smallest area to give (3rd)</option>
                     <option value="4">4: knowing when to not take a square</option>
