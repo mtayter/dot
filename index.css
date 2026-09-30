@@ -133,8 +133,10 @@
     width: 100%;
   }
 
-  /* Scores sit directly in the box — no inner cards. Names take the
-     player's board color; the side to move gets a wash of that color. */
+  /* Each score sits in its own box in the player's board color.
+     White text is the most visible on both. The side to move gets
+     a thick white border; the other keeps a faint one (same width,
+     so the layout doesn't shift). */
   .score-side {
     display: flex;
     flex-direction: column;
@@ -142,23 +144,31 @@
     gap: 0.25rem;
     padding: 0.75rem 0.25rem;
     border-radius: 8px;
+    border: 3px solid rgba(255, 255, 255, 0.25);
   }
+
+  #p1Card { background-color: #BF616A; }
+  #p2Card { background-color: #5E81AC; }
+
+  #p1Card.active, #p2Card.active { border-color: #ffffff; }
 
   .score-side .score-name {
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    color: #ffffff;
   }
-
-  #p1Card .score-name { color: #BF616A; }
-  #p2Card .score-name { color: #5E81AC; }
 
   .score-side output {
     font-size: 2rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: #ffffff;
     font-variant-numeric: tabular-nums;
+  }
+
+  .score-side .player-iters {
+    color: rgba(255, 255, 255, 0.85);
   }
 
   .player-iters {
