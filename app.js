@@ -22,7 +22,7 @@ function init() {
     const p2Iters = document.getElementById('p2Iters');
     const newGameButton = document.getElementById('newGameButton');
     const gameOverBanner = document.getElementById('gameOverBanner');
-    const playAgainButton = document.getElementById('playAgainButton');
+    const okButton = document.getElementById('okButton');
     let dotGame;
     let scoreboard = new Scoreboard(document.getElementById('p1Card'),
                                     document.getElementById('p2Card'),
@@ -89,7 +89,12 @@ function init() {
         dotGame.render();
     }
     newGameButton.addEventListener('click', newGame);
-    playAgainButton.addEventListener('click', newGame);
+    // Dismiss the result banner: OK button or a click on the backdrop
+    // (outside the card). Starting a fresh game stays on the New Game button.
+    okButton.addEventListener('click', () => gameOverBanner.classList.remove('show'));
+    gameOverBanner.addEventListener('click', (e) => {
+        if (e.target === gameOverBanner) gameOverBanner.classList.remove('show');
+    });
     function handleResize() {
         canvas.width = parentContainer.clientWidth;
         canvas.height= parentContainer.clientHeight;
